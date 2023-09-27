@@ -106,7 +106,7 @@ def main():
         <style>
             .element-container:has(#button-after) + div button {
                 position: fixed;
-                bottom: 60px;
+                bottom: 80px;
                 right: 20px;
                 opacity: 0.5;
                 border-radius: 10px;
@@ -117,4 +117,5 @@ def main():
     st.markdown('''<a target="_self" href="#testimonial-viewer"><button>Scroll to Top</button></a>''', unsafe_allow_html=True)
 
 if __name__ == '__main__':
+    st.set_page_config(page_title="Smriti 2016 nitk", page_icon=":memo:")
     main()

@@ -106,7 +106,7 @@ def main():
         <style>
             .element-container:has(#button-after) + div button {
                 position: fixed;
-                bottom: 20px;
+                bottom: 60px;
                 right: 20px;
                 opacity: 0.5;
                 border-radius: 10px;

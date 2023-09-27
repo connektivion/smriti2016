@@ -17,7 +17,7 @@ def preprocess_data():
 
 # Function to generate user links with proper routing
 def generate_user_link(user_info):
-    return f"<a href='/?rollnumber={user_info['roll']}' target='_self' rel='noopener noreferrer'>{user_info['name']} ({user_info['roll']})</a>"
+    return f"<a href='?rollnumber={user_info['roll']}' target='_self' rel='noopener noreferrer'>{user_info['name']} ({user_info['roll']})</a>"
 
 # Function to format HTML
 def format_html(input_text):
@@ -33,26 +33,34 @@ def format_html(input_text):
     return processed_text
 
 # Streamlit app
+@st.cache_resource
+def apply_style():
+    with open( "style.css" ) as css:
+        st.markdown( f'<style>{css.read()}</style>' , unsafe_allow_html= True)
+
 def main():
+    apply_style()
     st.title('Testimonial Viewer')
+    
+    # Create the header outside of the tabs
 
     # Page 1: Search for Users (Left part)
-    st.sidebar.header('Search for User')
-    search_option = st.sidebar.radio('Select search option:', ['By Name', 'By Roll Number'])
+    st.header('Search for User')
+    search_option = st.radio('Select search option:', ['By Name', 'By Roll Number'])
 
     user_index = preprocess_data()
 
     if search_option == 'By Name':
-        search_name = st.sidebar.text_input('Enter name:')
+        search_name = st.text_input('Enter name:')
         filtered_users = [info for info in user_index.values() if info['name'].lower().startswith(search_name.lower())] if search_name else []
     elif search_option == 'By Roll Number':
-        search_roll = st.sidebar.text_input('Enter roll number:')
+        search_roll = st.text_input('Enter roll number:')
         filtered_users = [info for info in user_index.values() if info['roll'].lower().startswith(search_roll.lower())] if search_roll else []
 
     # Display valid roll numbers/names as hyperlinks with proper routing
     for user_info in filtered_users:
         user_link = generate_user_link(user_info)
-        st.sidebar.markdown(user_link, unsafe_allow_html=True)
+        st.markdown(user_link, unsafe_allow_html=True)
 
     # Extract the route parameter
     route_param = st.experimental_get_query_params().get('rollnumber', [None])[0]
@@ -63,7 +71,11 @@ def main():
         testimonials = compiled_data.get(route_param, {})
         selected_user_info = user_index[route_param]
         
+        # Display the selected user's information
         st.markdown(f'Selected User: {generate_user_link(selected_user_info)}', unsafe_allow_html=True)
+
+        # Create a container for the testimonial content under tabs
+        testimonial_container = st.empty()
 
         st.subheader('User Testimonials')
         tabs = st.tabs(["Testimonials Received", "Testimonials Given"])
@@ -75,9 +87,34 @@ def main():
                     st.markdown(f"{'From' if testimonial_type == 'testimonials_to' else 'To'}: {generate_user_link(target_user_info)}", unsafe_allow_html=True)
                     st.markdown(format_html(testimonial['testimonial']), unsafe_allow_html=True)
                     st.write('---')
+    
     else:
         st.subheader("No roll number/invalid user")
-        st.sidebar.subheader('No User Selected')
+
+    # st.markdown(
+    #     """
+    #     <style>
+    #     /* Add custom CSS to style the fixed button */
+    #     .fixed-button {
+            
+    #     }
+    #     </style>
+    #     """,
+    #     unsafe_allow_html=True,
+    # )
+    st.markdown("""
+        <style>
+            .element-container:has(#button-after) + div button {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                opacity: 0.5;
+                border-radius: 10px;
+            }
+        </style>""", unsafe_allow_html=True)
+
+    st.markdown('<span id="button-after"></span>', unsafe_allow_html=True)
+    st.markdown('''<a target="_self" href="#testimonial-viewer"><button>Scroll to Top</button></a>''', unsafe_allow_html=True)
 
 if __name__ == '__main__':
     main()

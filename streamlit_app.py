@@ -104,9 +104,9 @@ def main():
     # )
     st.markdown("""
         <style>
-            .element-container:has(#button-after) + div button {
+            .element-container:has(#button-after) + div a button {
                 position: fixed;
-                bottom: 80px;
+                bottom: 150px;
                 right: 20px;
                 opacity: 0.5;
                 border-radius: 10px;

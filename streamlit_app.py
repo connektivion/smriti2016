@@ -40,10 +40,8 @@ def apply_style():
 
 def main():
     apply_style()
-    st.title('Testimonial Viewer')
+    st.title('Smriti 2016 Testimonials')
     
-    # Create the header outside of the tabs
-
     # Page 1: Search for Users (Left part)
     st.header('Search for User')
     search_option = st.radio('Select search option:', ['By Name', 'By Roll Number'])
@@ -91,17 +89,6 @@ def main():
     else:
         st.subheader("No roll number/invalid user")
 
-    # st.markdown(
-    #     """
-    #     <style>
-    #     /* Add custom CSS to style the fixed button */
-    #     .fixed-button {
-            
-    #     }
-    #     </style>
-    #     """,
-    #     unsafe_allow_html=True,
-    # )
     st.markdown("""
         <style>
             .element-container:has(#button-after) + div a button {

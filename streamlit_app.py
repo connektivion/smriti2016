@@ -101,7 +101,7 @@ def main():
         </style>""", unsafe_allow_html=True)
 
     st.markdown('<span id="button-after"></span>', unsafe_allow_html=True)
-    st.markdown('''<a target="_self" href="#testimonial-viewer"><button>Scroll to Top</button></a>''', unsafe_allow_html=True)
+    st.markdown('''<a target="_self" href="#smriti-2016-testimonials"><button>Scroll to Top</button></a>''', unsafe_allow_html=True)
 
 if __name__ == '__main__':
     st.set_page_config(page_title="Smriti 2016 nitk", page_icon=":memo:")
